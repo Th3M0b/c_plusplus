@@ -5,8 +5,11 @@
 #include <stdexcept>
 #include <cassert>
 
+#define countAfterDelete "New count after deleting objects: "
+
+
 class Country {
-private:
+public:
     std::string countryName;
     std::string capitalName;
     int yearsSinceFound;
@@ -15,18 +18,28 @@ private:
 
 public:
     // Default constructor
-    Country() : countryName(""), capitalName(""), yearsSinceFound(0), id(++objectCount) {}
+    Country(const std::string& cName, const std::string& capName, int* years = nullptr) : yearsSinceFound(0) {
+        setCountryName(cName);
+        setCapitalName(capName);
+    
+        if (years != nullptr) 
+            setYearsSinceFound(*years);  // Validate years before updating objectCount
+        
+        id = ++objectCount;  // Increment object count after validation
+    }
+
 
     // Parameterized constructor
-    Country(const std::string& cName, const std::string& capName, int years) : id(++objectCount) {
+    Country(const std::string& cName, const std::string& capName, int years) {
         setCountryName(cName);
         setCapitalName(capName);
         setYearsSinceFound(years);
+        id = ++objectCount;  // Increment object count after validation
     }
 
     // Destructor
     ~Country() {
-        // Empty destructor for now
+        --objectCount; // Decrement object count when an object is destroyed
     }
 
     // Setters with validation
@@ -39,34 +52,28 @@ public:
     }
 
     void setYearsSinceFound(int years) {
-        if (years < 0) {
+        if (years < 0) 
             throw std::invalid_argument("Years since found cannot be negative.");
-        }
+        
         yearsSinceFound = years;
     }
 
-    // Getters
-    std::string getCountryName() const {
-        return countryName;
+    // Function to add a country (takes vector as argument)
+    static void addCountry(std::vector<Country*>& countryList, const std::string& name, const std::string& capital, int* years = nullptr) {
+        countryList.push_back(new Country(name, capital, years));
     }
 
-    std::string getCapitalName() const {
-        return capitalName;
-    }
-
-    int getYearsSinceFound() const {
-        return yearsSinceFound;
-    }
-
-    int getId() const {
-        return id;
+    static void deleteAllCountries(std::vector<Country*>& countryList) {
+        for (size_t i = 0; i < countryList.size(); ++i) {
+            delete countryList[i];   // Deletes each country object
+        }
+        countryList.clear();  // Removes all pointers from the vector
     }
 
     // toString method for diagnostic information
     std::string toString() const {
         std::stringstream ss;
-        ss << "Country[ID: " << id << ", Name: " << countryName << ", Capital: " << capitalName
-           << ", Years Since Found: " << yearsSinceFound << "]";
+        ss << id << ". " << countryName << ", " << capitalName << ", " << yearsSinceFound;
         return ss.str();
     }
 
@@ -80,38 +87,36 @@ public:
 int Country::objectCount = 0;
 
 int main() {
-    // Create a list of Country objects
-    std::vector<Country> countryList;
+    // Define the country list inside main()
+    std::vector<Country*> countryList;
 
-    // Test 1: Creating objects and using Get and toString
-    try {
-        Country c1("Lithuania", "Vilnius", 1000);
-        Country c2("Latvia", "Riga", 800);
+    // Create objects using different constructors
+    Country::addCountry(countryList, "USA", "Washington D.C.", new int(1776));
+    Country::addCountry(countryList, "Lithuania", "Vilnius", new int(1991));
+    Country::addCountry(countryList, "Japan", "Tokyo"); // Without years
 
-        countryList.push_back(c1);
-        countryList.push_back(c2);
-
-        // Print diagnostic information
-        std::cout << c1.toString() << std::endl;
-        std::cout << c2.toString() << std::endl;
-
-        // Check Get methods
-        assert(c1.getCountryName() == "Lithuania");
-        assert(c1.getCapitalName() == "Vilnius");
-        assert(c1.getYearsSinceFound() == 1000);
-    } catch (const std::exception& e) {
-        std::cerr << "Exception: " << e.what() << std::endl;
+    // Display all countries
+    for (std::vector<Country*>::iterator it = countryList.begin(); it != countryList.end(); ++it) {
+        Country* c = *it;
+        std::cout << c->toString() << std::endl;
     }
 
-    // Test 2: Exception handling
+    std::cout << "Initial object count: " << Country::getObjectCount() << std::endl;
+
+
     try {
-        Country c3("InvalidCountry", "InvalidCapital", -50);
+        Country::addCountry(countryList, "InvalidCountry", "Nowhere", new int(-100)); // Invalid year
+        assert(false);  // This line should not be reached
     } catch (const std::invalid_argument& e) {
-        std::cout << "Caught exception for invalid years: " << e.what() << std::endl;
+        // Expected exception for negative years
+        std::cout << "Caught expected exception: " << e.what() << std::endl;
     }
 
-    // Test 3: Static object count
-    std::cout << "Total countries created: " << Country::getObjectCount() << std::endl;
+    // Delete all objects at once
+    Country::deleteAllCountries(countryList);
+    std::cout << countAfterDelete << Country::getObjectCount() << std::endl;
+
+    assert(Country::getObjectCount() == 0); // Should be 0 after deletion
 
     return 0;
 }
