@@ -1,0 +1,26 @@
+•
+Abstraktaus duomenų tipo (ADT) sukūrimas: Reikia implementuoti pasirinktą duomenų struktūrą/konteinerį kaip C++ klasę su atitinkamais metodais, leidžiančiais dirbti su informacija. Tai apima tokias operacijas kaip elementų sukūrimas, šalinimas, pridėjimas, peržiūra ir modifikavimas (panašiai kaip CRUD operacijos).
+•
+Kodo atskyrimas: Kodas turi būti padalintas į antraštės failą (.h) ir realizacijos failą (.cpp). Antraštės faile turi būti apsauga nuo pakartotinio įtraukimo, klasės aprašas su metodų deklaracijomis ir dokumentacija, paaiškinanti, kaip naudotis klase. Realizacijos faile turi būti visa metodų implementacija.
+•
+Konstantų ir sinonimų naudojimas: Būtina naudoti konstantas ir tipo sinonimus.
+•
+Modifikatorių ir skaitytojų skyrimas: Metodai turi būti atskirti į modifikatorius (tikėtina, su konstantiniais parametrais) ir informacijos gavėjus/skaitytojus (turėtų būti konstantiniai metodai).
+•
+Išimčių generavimas: Privaloma mesti standartines išimtis (pvz., invalid_argument) netvarkingose situacijose ir sukurti savo išimties klasę, susijusią su projektu ir patalpintą projekto vardų erdvėje. Reikia parodyti, kaip ši savo sukurta išimtis yra metama ir pagaunama main funkcijoje ar testuose. Ši išimtis turėtų atspindėti logines klaidas, kurioms netinka standartinės išimtys.
+•
+Demonstracinis main failas: Turi būti failas main.cpp, kuriame demonstruojamas klasės veikimas be vartotojo įvedimo. Būtina patikrinti, ar visi sukurti objektai yra sėkmingai sunaikinti. Visas main funkcijos turinys turi būti patalpintas try...catch(...) bloke, kad būtų galima pagauti nenumatytas išimtis ir korektiškai užbaigti programą.
+•
+Pimple (Pointer to Implementation) idiomos naudojimas: Visa klasės realizacija (privatūs laukai ir metodai) turi būti saugoma atskiroje realizacijos klasėje, o viešoje antraštės failo klasėje turėtų būti tik vienas privatus rodyklė į neišbaigtą realizacijos klasę. Tai reiškia, kad antraštės faile negali būti jokių privačių narių, išskyrus šį vieną rodyklę. Realizacijos klasės objektas turėtų būti kuriamas dinamiškai konstruktoriuje ir naikinamas destruktoriuje.
+•
+Gilus kopijavimas: Dėl Pimple idiomos būtina implementuoti gilų kopijavimą, sukuriant kopijos konstruktorių ir perkraunant priskyrimo operatorių.
+•
+Operatoriai: Reikia perkrauti operatorius: bent vieną vienvietį ir bent vieną dvivietį. Taip pat tikimasi, kad bus implementuoti palyginimo operatoriai (pvz., <, >, ==, !=, pakanka implementuoti == ir <). Elementų pridėjimas ir šalinimas taip pat turėtų būti atliekamas per operatorius (pvz., +=, -=). Galima pagalvoti apie papildomus operatorius, tokius kaip modifikavimo (~), konteinerio išvalymo (!), pre- ir post-inkremento/dekremento (++, --). Būtina perkrauti laužtinius skliaustus [] paieškai (pagal reikšmę arba pagal indeksą, priklausomai nuo konteinerio tipo). Svarbu suprasti operatorių semantiką ir jų nepanaudoti ne pagal paskirtį.
+•
+Iteratoriai (papildomai): Norint gauti papildomų balų, galima implementuoti iteratorius kaip vidinę klasę, leidžiančią naršyti po konteinerį. Iteratorius turi būti pilnavertis (kaip std::vector iteratorius), o jo pavadinimas turėtų atitikti jo tipą (pvz., forward_iterator, bidirectional_iterator).
+•
+Testavimas (test.cpp): Turi būti atskiras failas test.cpp su main funkcija, kurioje atliekami testai, iškviečiantys visas implementuotas operacijas bent po kartą. Po kiekvienos modifikacijos turėtų būti naudojami assert patikrinimai, ar būsena atitinka lūkesčius. Reikia sugalvoti būdus, kaip testuoti sąrašus (pvz., lyginti mažus sąrašus, generuoti eilutės atvaizdavimą ir jį lyginti). Negalima spausdinti per daug eilučių testuojant didelius sąrašus.
+•
+Makefile: Būtina sukurti Makefile, kuris automatizuotų projekto surinkimą. Makefile turėtų turėti taikinius (targets) modulio kompiliavimui, sujungimui, demonstracinio failo surinkimui, testų surinkimui, testų vykdymui (rezultatai turi būti rodomi ekrane ir įrašomi į failą), visko surinkimui bei "švaraus" perkompiliavimo taikinius.
+•
+Failų struktūra: Tikimasi, kad projektą sudarys failai: .h, .cpp, main.cpp, test.cpp ir Makefile. Prie pateikimo reikėtų rodyti katalogo turinį su šiais failais.
