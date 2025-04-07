@@ -7,8 +7,8 @@
 namespace BSTProject{
 
     // Node structure
-    struct BST::Node {
-
+    struct Node {
+            using ValueType = int;
             ValueType value;
             std::unique_ptr<Node> left;
             std::unique_ptr<Node> right;
@@ -18,12 +18,13 @@ namespace BSTProject{
 
     // Implementation class
     struct BST::Impl {
-
             std::unique_ptr<Node> root;
             ValueType nodeCount = 0;
 
             Impl() : root(nullptr), nodeCount(0) {}
     };
+
+    BSTException::BSTException(const std::string& msg) : std::runtime_error(msg) {}  // Definition
 
     // Constructor
     BST::BST() : pImpl(new Impl()) {}
@@ -32,7 +33,7 @@ namespace BSTProject{
     BST::~BST() {}
 
     // Copy constructor
-    std::unique_ptr<BST::Node> BST::copyTree(const std::unique_ptr<Node>& source) {
+    std::unique_ptr<Node> copyTree(const std::unique_ptr<Node>& source) {
         if (!source) return nullptr;
         std::unique_ptr<Node> newNode = std::unique_ptr<Node>(new Node(source->value));
         newNode->left = copyTree(source->left);
@@ -212,7 +213,7 @@ namespace BSTProject{
             }
         };
 
-        return CompareHelper::compare(pImpl -> root, other.pImpl -> root);
+        return false;
     }
 
     bool BST::operator!=(const BST& other) const {
