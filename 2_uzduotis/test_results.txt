@@ -1,0 +1,8 @@
+Empty tree tests passed.
+Insert and contains tests passed.
+Remove tests passed.
+Copy operations tests passed.
+Operators tests passed.
+Exception handling tests passed.
+In-order behavior tests passed.
+All tests passed successfully!
