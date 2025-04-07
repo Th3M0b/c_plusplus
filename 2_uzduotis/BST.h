@@ -64,7 +64,7 @@ namespace BSTProject {
 
     class BSTException : public std::runtime_error{
         public:
-            explicit BSTException(const std::string& msg) : std::runtime_error(msg){}
+            explicit BSTException(const std::string& msg);
     };
 
     //
@@ -112,10 +112,7 @@ namespace BSTProject {
 
         private:
             // Forward declaration of the implementation class
-            struct Node; // Node structure 
             struct Impl; // Implementation class
-            static std::unique_ptr<Node> copyTree(const std::unique_ptr<Node>& source);
-
             std::unique_ptr<Impl> pImpl; // Pointer to the implementation
 };
 }
