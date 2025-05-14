@@ -37,6 +37,7 @@ public:
     virtual ~Validator() = default;
     virtual bool validate(const std::string& data) const = 0;
     virtual std::string getErrorMessage() const = 0;
+    
 };
 
 // Validavimo kontekstas, naudojantis strategiją
@@ -66,5 +67,8 @@ public:
         return strategy->getErrorMessage();
     }
 };
+
+std::unique_ptr<Validator> createEmailValidator();
+std::unique_ptr<Validator> createPhoneValidator();
 
 #endif // VALIDATOR_H
