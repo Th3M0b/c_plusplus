@@ -2,6 +2,7 @@
 #include <memory>
 #include "validator.h"
 
+
 // Helper funkcija demonstracijai
 void testValidation(ValidationContext& context, const std::string& data) {
     try {
